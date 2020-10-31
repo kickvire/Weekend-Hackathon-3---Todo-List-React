@@ -3,7 +3,9 @@ export default function TodoList(props) {
   return (
     <>
       <li className="list">{props.text}</li>
-      <button onClick={() => props.onDelete(props.id)}>Delete</button>
+      <button className="delete" onClick={() => props.onDelete(props.id)}>
+        Delete
+      </button>
     </>
   );
 }
