@@ -1,52 +1,36 @@
-import React, { useState } from "react";
+import React from "react";
 import "./../styles/App.css";
+import TodoList from "./TodoList";
 
 function App() {
-  const [inputText, setInputText] = useState("");
-  const [listOfitems, setlistOfitems] = useState([]);
-  const [save, setsaveButton] = useState("");
+  const [todos, setTodos] = React.useState([]);
+  const [input, setInput] = React.useState("");
 
-  const handleChange = (event) => {
-    let newInput = event.target.value;
-    setInputText(newInput);
+  const handleChange = ({ target }) => {
+    setInput(target.value);
+    console.log(input);
   };
-  const handleAdd = () => {
-    if (inputText === "") return;
-    setlistOfitems((previtems) => [...previtems, inputText]);
-    setInputText("");
+  const addTodo = (event) => {
+    setTodos([...todos, input]);
+    console.log(todos);
+    setInput("");
   };
+
   const handleDelete = (id) => {
-    const restAfterremove = listOfitems.filter((todo, index) => index !== id);
-    setlistOfitems(restAfterremove);
+    const filterTodos = todos.filter((todo, index) => index !== id);
+    setTodos(filterTodos);
   };
-
-  const handleEdit = (id, item) => {
-    setInputText(item);
-    setsaveButton(id);
-  };
-
-  const handleSave = () => {
-    if (inputText === "") return;
-    listOfitems[save] = inputText;
-    setInputText("");
-    setsaveButton("");
-  };
-
   return (
     <div id="main">
-      <input type="text" onChange={handleChange} value={inputText} />
-      <button onClick={handleAdd}>Add</button>
-      <button onClick={handleSave}>Save</button>
-      <ol>
-        {listOfitems.map((item, index) => (
-          <li key={index}>
-            {item}
-            <button onClick={() => handleDelete(index, item)}>Delete</button>
-            <button onClick={() => handleEdit(index, item)}>Edit</button>
-          </li>
-        ))}
-      </ol>
+      <textarea id="task" value={input} onChange={handleChange} />
+      <button id="btn" disabled={!input} onClick={addTodo}>
+        Add Todo
+      </button>
+      {todos.map((todo, index) => (
+        <TodoList onDelete={handleDelete} id={index} text={todo} />
+      ))}
     </div>
   );
 }
+
 export default App;
