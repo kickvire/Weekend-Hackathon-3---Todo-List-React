@@ -1,57 +1,81 @@
-import React from "react";
+import React, { useState } from "react";
 import "./../styles/App.css";
-import TodoList from "./TodoList";
 
 function App() {
-  const [todos, setTodos] = React.useState([]);
-  const [input, setInput] = React.useState("");
-  const [save, setSave] = React.useState("");
+  const [inputText, setInputText] = useState("");
+  const [listOfitems, setlistOfitems] = useState([]);
+  const [save, setsaveButton] = useState("");
+  const [editinput, seteditinput] = useState("");
 
-  const handleChange = ({ target }) => {
-    setInput(target.value);
-    console.log(input);
+  const handleChange = (event) => {
+    let newInput = event.target.value;
+    setInputText(newInput);
   };
-  const addTodo = (event) => {
-    setTodos([...todos, input]);
-    console.log(todos);
-    setInput("");
+  const handleAdd = () => {
+    if (inputText === "") return;
+    setlistOfitems((previtems) => [...previtems, inputText]);
+    setInputText("");
+  };
+  const handleDelete = (id) => {
+    const restAfterremove = listOfitems.filter((todo, index) => index !== id);
+    setlistOfitems(restAfterremove);
   };
 
   const handleEdit = (id, item) => {
-    setInput(item);
-    setSave(id);
+    setsaveButton(id);
   };
-  const handleSave = () => {
-    if (input === "") return;
-    todos[save] = input;
-    setInput("");
-    setSave("");
+  const handleEditChange = (event) => {
+    seteditinput(event.target.value);
   };
 
-  const handleDelete = (id) => {
-    const filterTodos = todos.filter((todo, index) => index !== id);
-    setTodos(filterTodos);
+  const handleSave = (id) => {
+    if (editinput === "") return;
+    listOfitems[id] = editinput;
+    setInputText("");
+    setsaveButton("");
   };
+
   return (
     <div id="main">
-      <textarea id="task" value={input} onChange={handleChange} />
-      <button id="btn" disabled={!input} onClick={addTodo}>
-        Add Todo
+      <textarea
+        rows="4"
+        cols="50"
+        id="task"
+        type="text"
+        onChange={handleChange}
+        value={inputText}
+      />
+      <button id="btn" onClick={handleAdd}>
+        Add
       </button>
-      <button id="btn" disabled={!input} onClick={handleSave}>
-        Save
-      </button>
-      {todos.map((todo, index) => (
-        <TodoList
-          key={index}
-          onDelete={handleDelete}
-          id={index}
-          text={todo}
-          onEdit={handleEdit}
-        />
-      ))}
+      <ol>
+        {listOfitems.map((item, index) => (
+          <li className="list" key={index}>
+            {item}
+            <button class="delete" onClick={() => handleDelete(index)}>
+              Delete
+            </button>
+            <button class="edit" onClick={() => handleEdit(index, item)}>
+              Edit
+            </button>
+            {save === index && (
+              <>
+                <textarea
+                  value={editinput}
+                  onChange={handleEditChange}
+                  className="editTask"
+                  rows="4"
+                  cols="50"
+                ></textarea>
+                <button id="saveTask" onClick={() => handleSave(index)}>
+                  Save
+                </button>
+              </>
+            )}
+          </li>
+        ))}
+      </ol>
     </div>
   );
 }
-
 export default App;
