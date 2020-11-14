@@ -11,11 +11,13 @@ function App() {
     let newInput = event.target.value;
     setInputText(newInput);
   };
+
   const handleAdd = () => {
     if (inputText === "") return;
     setlistOfitems((previtems) => [...previtems, inputText]);
     setInputText("");
   };
+
   const handleDelete = (id) => {
     const restAfterremove = listOfitems.filter((todo, index) => index !== id);
     setlistOfitems(restAfterremove);
@@ -50,8 +52,8 @@ function App() {
       </button>
       <ol>
         {listOfitems.map((item, index) => (
-          <li className="list" key={index}>
-            {item}
+          <li key={index}>
+            <span className="list">{item}</span>
             <button className="delete" onClick={() => handleDelete(index)}>
               Delete
             </button>
@@ -67,7 +69,7 @@ function App() {
                   rows="4"
                   cols="50"
                 ></textarea>
-                <button id="saveTask" onClick={() => handleSave(index)}>
+                <button className="saveTask" onClick={() => handleSave(index)}>
                   Save
                 </button>
               </>
