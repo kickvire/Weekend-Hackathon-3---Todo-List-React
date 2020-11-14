@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import "./styles.css";
+import "./../styles/App.css";
 
-export default function App() {
+function App() {
   const [inputText, setInputText] = useState("");
   const [listOfitems, setlistOfitems] = useState([]);
   const [save, setsaveButton] = useState("");
@@ -39,7 +39,7 @@ export default function App() {
       <button onClick={handleSave}>Save</button>
       <ol>
         {listOfitems.map((item, index) => (
-          <li>
+          <li key={index}>
             {item}
             <button onClick={() => handleDelete(index, item)}>Delete</button>
             <button onClick={() => handleEdit(index, item)}>Edit</button>
@@ -49,3 +49,4 @@ export default function App() {
     </div>
   );
 }
+export default App;
