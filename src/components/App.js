@@ -21,7 +21,7 @@ function App() {
     setlistOfitems(restAfterremove);
   };
 
-  const handleEdit = (id, item) => {
+  const handleEdit = (id) => {
     setsaveButton(id);
   };
   const handleEditChange = (event) => {
@@ -31,7 +31,7 @@ function App() {
   const handleSave = (id) => {
     if (editinput === "") return;
     listOfitems[id] = editinput;
-    setInputText("");
+    seteditinput("");
     setsaveButton("");
   };
 
@@ -52,10 +52,10 @@ function App() {
         {listOfitems.map((item, index) => (
           <li className="list" key={index}>
             {item}
-            <button class="delete" onClick={() => handleDelete(index)}>
+            <button className="delete" onClick={() => handleDelete(index)}>
               Delete
             </button>
-            <button class="edit" onClick={() => handleEdit(index, item)}>
+            <button className="edit" onClick={() => handleEdit(index)}>
               Edit
             </button>
             {save === index && (
